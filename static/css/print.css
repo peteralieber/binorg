@@ -1,1 +1,29 @@
-@page { margin: 10mm; } body { font-family: sans-serif; } .label { display: inline-block; width: 70mm; height: 70mm; text-align: center; page-break-inside: avoid; } .label img { width: 45mm; height: 45mm; } .label h1 { font-size: 16pt; margin: 0; } .label p { margin: 3mm 0; }
+@page {
+  margin: 10mm;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+.label {
+  display: inline-block;
+  width: 70mm;
+  height: 70mm;
+  text-align: center;
+  page-break-inside: avoid;
+}
+
+.label img {
+  width: 45mm;
+  height: 45mm;
+}
+
+.label h1 {
+  margin: 0;
+  font-size: 16pt;
+}
+
+.label p {
+  margin: 3mm 0;
+}

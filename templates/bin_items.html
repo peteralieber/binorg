@@ -1,1 +1,7 @@
-<ul class="items">{% for item in items %}{% include "item_row.html" %}{% else %}<li>No items in this bin.</li>{% endfor %}</ul>
+<ul class="items">
+  {% for item in items %}
+    {% include "item_row.html" %}
+  {% else %}
+    <li>No items in this bin.</li>
+  {% endfor %}
+</ul>

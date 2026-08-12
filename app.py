@@ -46,7 +46,14 @@ def create_app(test_config: dict | None = None) -> Flask:
             name = request.form.get("name", "").strip()
             description = request.form.get("description", "").strip()
             if not name:
-                return render_template("create_bin.html", error="A bin name is required."), 400
+                return (
+                    render_view(
+                        "create_bin_page.html",
+                        "fragments/create_bin_form.html",
+                        error="A bin name is required.",
+                    ),
+                    400,
+                )
             db = get_db()
             cursor = db.execute(
                 "INSERT INTO bins (name, description) VALUES (?, ?)", (name, description)
@@ -60,13 +67,14 @@ def create_app(test_config: dict | None = None) -> Flask:
             db.execute("UPDATE bins SET qr_code_path = ? WHERE id = ?", (f"qr/{qr_filename}", bin_id))
             db.commit()
             return redirect(url_for("view_bin", bin_id=bin_id))
-        return render_template("create_bin.html")
+        return render_view("create_bin_page.html", "fragments/create_bin_form.html")
 
     @app.route("/bins/<int:bin_id>")
     def view_bin(bin_id: int):
         bin_data = get_bin(bin_id)
-        return render_template(
-            "bin.html",
+        return render_view(
+            "bin_page.html",
+            "fragments/bin.html",
             bin=bin_data,
             items=query_db("SELECT * FROM items WHERE bin_id = ? ORDER BY name", (bin_id,)),
         )
@@ -148,7 +156,7 @@ def create_app(test_config: dict | None = None) -> Flask:
 
     @app.route("/scan")
     def scan_page():
-        return render_template("scan.html")
+        return render_view("scan_page.html", "fragments/scan.html")
 
     @app.route("/scan/<int:bin_id>")
     def scan_redirect(bin_id: int):
@@ -224,6 +232,11 @@ def init_db() -> None:
 
 def query_db(query: str, parameters: tuple = ()) -> list[sqlite3.Row]:
     return get_db().execute(query, parameters).fetchall()
+
+
+def render_view(page_template: str, fragment_template: str, **context):
+    template = fragment_template if request.headers.get("HX-Request") == "true" else page_template
+    return render_template(template, **context)
 
 
 def get_bin(bin_id: int) -> sqlite3.Row:

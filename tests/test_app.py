@@ -37,6 +37,23 @@ def test_creating_bin_generates_qr_code(client, app):
     assert (Path(app.config["QR_FOLDER"]) / "bin-1.png").exists()
 
 
+def test_primary_views_return_fragments_for_htmx(client):
+    create_bin(client)
+    headers = {"HX-Request": "true"}
+
+    bin_response = client.get("/bins/1", headers=headers)
+    assert b'<section class="bin-header">' in bin_response.data
+    assert b"<!doctype html>" not in bin_response.data
+
+    create_response = client.get("/bins/new", headers=headers)
+    assert b'<section id="create-bin">' in create_response.data
+    assert b"<!doctype html>" not in create_response.data
+
+    scan_response = client.get("/scan", headers=headers)
+    assert b'<section id="scan-bin">' in scan_response.data
+    assert b"<!doctype html>" not in scan_response.data
+
+
 def test_item_lifecycle_and_search(client):
     create_bin(client)
     response = client.post(

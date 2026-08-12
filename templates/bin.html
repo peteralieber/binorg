@@ -1,6 +1,0 @@
-{% extends "base.html" %}{% block content %}
-<section class="bin-header"><div><h2>{{ bin.name }}</h2><p>{{ bin.description }}</p></div>{% if bin.qr_code_path %}<img class="qr" src="{{ url_for('static', filename=bin.qr_code_path) }}" alt="QR code for {{ bin.name }}">{% endif %}</section>
-<p><a href="{{ url_for('print_bin_labels', bin_id=bin.id) }}" target="_blank">Print QR label</a> <button hx-post="{{ url_for('print_combined', bin_id=bin.id) }}" hx-target="#print-status">Print thermal label</button> <span id="print-status"></span></p>
-<h3>Items</h3><div id="item-list">{% include "bin_items.html" %}</div>
-<h3>Add an item</h3><form class="form" hx-post="{{ url_for('add_item', bin_id=bin.id) }}" hx-target="#item-list" enctype="multipart/form-data"><label>Name <input name="name" required></label><label>Description <input name="description"></label><label>Quantity <input name="quantity" type="number" min="0" value="1"></label><label>Photo <input name="photo" type="file" accept="image/png,image/jpeg,image/gif,image/webp"></label><button>Add item</button></form>
-{% endblock %}
