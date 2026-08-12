@@ -16,8 +16,6 @@ def app(tmp_path):
             "QR_FOLDER": tmp_path / "qr",
         }
     )
-    app.teardown_appcontext_funcs.clear()
-    app.teardown_appcontext(lambda error: get_db().close())
     return app
 
 

@@ -9,7 +9,7 @@ import uuid
 from pathlib import Path
 
 import qrcode
-from flask import Flask, abort, current_app, redirect, render_template, request, url_for
+from flask import Flask, abort, current_app, g, redirect, render_template, request, url_for
 from werkzeug.utils import secure_filename
 
 from printer import print_bin_label
@@ -34,6 +34,7 @@ def create_app(test_config: dict | None = None) -> Flask:
     Path(app.config["QR_FOLDER"]).mkdir(parents=True, exist_ok=True)
     with app.app_context():
         init_db()
+    app.teardown_appcontext(close_db)
 
     @app.route("/")
     def index():
@@ -187,14 +188,14 @@ def create_app(test_config: dict | None = None) -> Flask:
 
 
 def get_db() -> sqlite3.Connection:
-    if "db" not in current_app.g:
-        current_app.g.db = sqlite3.connect(current_app.config["DATABASE"])
-        current_app.g.db.row_factory = sqlite3.Row
-    return current_app.g.db
+    if "db" not in g:
+        g.db = sqlite3.connect(current_app.config["DATABASE"])
+        g.db.row_factory = sqlite3.Row
+    return g.db
 
 
 def close_db(_error=None) -> None:
-    db = current_app.g.pop("db", None)
+    db = g.pop("db", None)
     if db is not None:
         db.close()
 
@@ -254,7 +255,6 @@ def save_photo(photo) -> str | None:
 
 
 app = create_app()
-app.teardown_appcontext(close_db)
 
 
 if __name__ == "__main__":
