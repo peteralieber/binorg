@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Binorg{% endblock %}</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <header>
+    <h1><a href="{{ url_for('index') }}">Binorg</a></h1>
+    <nav>
+      <a href="{{ url_for('create_bin') }}" hx-get="{{ url_for('create_bin') }}" hx-target="#app-content" hx-push-url="true">New bin</a>
+      <a href="{{ url_for('scan_page') }}" hx-get="{{ url_for('scan_page') }}" hx-target="#app-content" hx-push-url="true">Scan</a>
+      <a href="{{ url_for('print_all_labels') }}" target="_blank">Print all</a>
+    </nav>
+  </header>
+  <main id="app-content">{% block content %}{% endblock %}</main>
+</body>
+</html>

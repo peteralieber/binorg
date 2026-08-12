@@ -1,0 +1,16 @@
+{% if query %}
+  <h2>Matches</h2>
+  <ul class="items">
+    {% for item in items %}
+      <li>
+        <a href="{{ url_for('view_bin', bin_id=item.bin_id) }}">{{ item.name }}</a>
+        ({{ item.quantity }}) in {{ item.bin_name }}
+        {% if item.description %}
+          — {{ item.description }}
+        {% endif %}
+      </li>
+    {% else %}
+      <li>No items matched “{{ query }}”.</li>
+    {% endfor %}
+  </ul>
+{% endif %}

@@ -1,0 +1,17 @@
+<section id="create-bin">
+  <h2>Create a bin</h2>
+  {% if error %}
+    <p class="error">{{ error }}</p>
+  {% endif %}
+  <form
+    method="post"
+    class="form"
+    hx-post="{{ url_for('create_bin') }}"
+    hx-target="#app-content"
+    hx-push-url="true"
+  >
+    <label>Name <input name="name" required autofocus></label>
+    <label>Description <textarea name="description"></textarea></label>
+    <button>Create bin</button>
+  </form>
+</section>

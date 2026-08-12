@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<label for="search">Find an item</label>
+<input
+  id="search"
+  name="q"
+  type="search"
+  placeholder="Search items"
+  hx-get="{{ url_for('search') }}"
+  hx-trigger="input changed delay:300ms"
+  hx-target="#search-results"
+>
+<section id="search-results"></section>
+
+<h2>Bins</h2>
+<ul class="cards">
+  {% for bin in bins %}
+    <li>
+      <a
+        href="{{ url_for('view_bin', bin_id=bin.id) }}"
+        hx-get="{{ url_for('view_bin', bin_id=bin.id) }}"
+        hx-target="#app-content"
+        hx-push-url="true"
+      >
+        <strong>{{ bin.name }}</strong>
+        <span>{{ bin.description }}</span>
+      </a>
+    </li>
+  {% else %}
+    <li>No bins yet. <a href="{{ url_for('create_bin') }}">Create one</a>.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
