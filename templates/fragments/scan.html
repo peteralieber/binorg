@@ -1,7 +1,13 @@
 <section id="scan-bin">
   <h2>Scan a bin label</h2>
-  <p>Allow camera access, then point it at a Binorg QR label.</p>
+  <p>Allow camera access, point it at a Binorg QR label, or use a USB QR scanner.</p>
   <video id="camera" autoplay playsinline></video>
+  <form id="scan-input-form">
+    <label for="scan-input">USB scanner input</label>
+    <input id="scan-input" name="scan-input" type="text" autocomplete="off" autofocus>
+    <button type="submit">Open bin</button>
+  </form>
   <p id="scan-status">Starting camera…</p>
 </section>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 <script src="{{ url_for('static', filename='js/qr_scanner.js') }}"></script>

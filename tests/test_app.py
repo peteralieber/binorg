@@ -51,6 +51,8 @@ def test_primary_views_return_fragments_for_htmx(client):
 
     scan_response = client.get("/scan", headers=headers)
     assert b'<section id="scan-bin">' in scan_response.data
+    assert b'id="scan-input"' in scan_response.data
+    assert b"jsQR.min.js" in scan_response.data
     assert b"<!doctype html>" not in scan_response.data
 
 
